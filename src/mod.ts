@@ -1,2 +1,2 @@
-export { generateOg } from "./core/generate.tsx";
-export type { GenerateOptions, OutputFormat } from "./core/types.ts";
+export type { GenerateOptions, OutputFormat, TemplateName } from "./core/types.ts";
+export { generateOg } from "./templates/index.ts";

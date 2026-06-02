@@ -41,14 +41,13 @@ src/
   mod.ts                 # public library exports
 
   core/
-    generate.ts          # high-level generateOg(config) orchestration
     render.ts            # Satori -> SVG -> Resvg PNG pipeline
     config.ts            # config loading, defaults, validation
     types.ts             # shared public types
 
   templates/
-    index.ts
-    project-card.tsx     # general title/description/url card
+    generated.tsx        # high-level generateOg(config) orchestration
+    card.tsx             # general title/description/url card
     terminal-card.tsx    # card with terminal/window frame
     split-card.tsx       # optional image/content split layout
 
@@ -177,10 +176,10 @@ Start with graph paper.
 
 Tasks:
 
-- [ ] Implement a `graph-paper` background preset.
-- [ ] Support color, opacity, grid size, and background color options.
-- [ ] Allow patterns to be embedded in the generated SVG.
-- [ ] Add a few low-noise variants for readability.
+- [x] Implement a `graph-paper` background preset.
+- [x] Support color, opacity, grid size, and background color options.
+- [x] Allow patterns to be embedded in the generated SVG.
+- [x] Add a few low-noise variants for readability.
 
 Suggested presets:
 
@@ -210,10 +209,10 @@ Implement reusable frame components.
 
 Tasks:
 
-- [ ] Define shared terminal frame props.
-- [ ] Implement each terminal style as a preset.
-- [ ] Support title text and optional toolbar controls.
-- [ ] Support code/content slot inside the frame.
+- [x] Define shared terminal frame props.
+- [x] Implement each terminal style as a preset.
+- [x] Support title text and optional toolbar controls.
+- [x] Support code/content slot inside the frame.
 
 ## Reference projects
 
@@ -255,11 +254,11 @@ Tasks:
 
 ### Phase 3: Templates
 
-- [ ] Build a base project card template.
-- [ ] Build a terminal card template.
-- [ ] Add graph-paper background.
-- [ ] Add terminal style presets.
-- [ ] Add theme tokens for colors, spacing, radius, and shadows.
+- [x] Build a base project card template.
+- [x] Build a terminal card template.
+- [x] Add graph-paper background.
+- [x] Add terminal style presets.
+- [x] Add theme tokens for colors, spacing, radius, and shadows.
 
 ### Phase 4: CLI
 
@@ -274,6 +273,24 @@ Tasks:
 - [ ] Document calling the Deno CLI from an Astro project.
 - [ ] Add examples for `public/og.png` generation.
 - [ ] Consider a small helper for generating multiple route images.
+
+## Parking lot
+
+### Code snippet image generation
+
+Consider adding a code-snippet image mode after the core OG generator is stable.
+This could render syntax-highlighted code inside the terminal/window frames.
+
+Possible direction:
+
+- Accept a source file path or inline code string.
+- Use a highlighter such as Shiki if Deno/JSR/npm support is clean enough%.
+- Reuse terminal styles: `mac`, `windows`, `gnome`, and `win95`.
+- Support language, theme, line numbers, highlighted lines, and filename.
+- Output PNG/SVG like the OG templates.
+
+Keep this separate from the first OG-image workflow unless the need appears in
+three or more real templates.
 
 ## Decisions
 

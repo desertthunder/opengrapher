@@ -1,17 +1,18 @@
 import { ensureDir } from "jsr:@std/fs@1.0.24/ensure-dir";
 import { dirname } from "jsr:@std/path@1.1.5/dirname";
+import { resolveOptions } from "../core/config.ts";
+import { renderImage } from "../core/render.ts";
+import type { GenerateOptions, ResolvedGenerateOptions } from "../core/types.ts";
 import { resolveFonts } from "../fonts/resolve.ts";
 import { getFontPreset } from "../presets/index.ts";
-import { ProjectCard } from "../templates/project-card.tsx";
-import { resolveOptions } from "./config.ts";
-import { renderImage } from "./render.ts";
-import type { GenerateOptions } from "./types.ts";
+import { ProjectCard } from "./card.tsx";
+import { TerminalCard } from "./terminal-card.tsx";
 
 export async function generateOg(options: GenerateOptions = {}): Promise<void> {
   const resolved = resolveOptions(options);
   const fonts = await resolveFonts(getFontPreset(resolved.fontPreset));
   const image = await renderImage({
-    element: <ProjectCard {...resolved} />,
+    element: renderTemplate(resolved),
     fonts,
     width: resolved.width,
     height: resolved.height,
@@ -22,4 +23,9 @@ export async function generateOg(options: GenerateOptions = {}): Promise<void> {
   await Deno.writeFile(resolved.out, image);
 
   console.log(`Wrote ${resolved.out}`);
+}
+
+function renderTemplate(options: ResolvedGenerateOptions) {
+  if (options.template === "terminal") return <TerminalCard {...options} />;
+  return <ProjectCard {...options} />;
 }

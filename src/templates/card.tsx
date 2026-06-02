@@ -1,7 +1,9 @@
+import { graphPaperBackgroundImage } from "../backgrounds/index.ts";
 import type { ResolvedGenerateOptions } from "../core/types.ts";
+import { tokens } from "../theme/tokens.ts";
 
 export function ProjectCard(
-  { title, description, typography, width, height }: ResolvedGenerateOptions,
+  { title, description, typography, background, width, height }: ResolvedGenerateOptions,
 ) {
   return (
     <div
@@ -11,10 +13,9 @@ export function ProjectCard(
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        backgroundColor: "#f8fafc",
-        backgroundImage:
-          "linear-gradient(#dbe3ef 1px, transparent 1px), linear-gradient(90deg, #dbe3ef 1px, transparent 1px)",
-        backgroundSize: "42px 42px",
+        backgroundColor: background.backgroundColor,
+        backgroundImage: graphPaperBackgroundImage(background),
+        backgroundSize: `${background.gridSize}px ${background.gridSize}px`,
         fontFamily: typography.sans,
         color: "#111827",
       }}
@@ -27,10 +28,10 @@ export function ProjectCard(
           flexDirection: "column",
           justifyContent: "space-between",
           padding: "56px 64px",
-          border: "1px solid #d6dee9",
-          borderRadius: 32,
-          background: "rgba(255, 255, 255, 0.88)",
-          boxShadow: "0 30px 80px rgba(15, 23, 42, 0.16)",
+          border: `1px solid ${tokens.color.border}`,
+          borderRadius: tokens.radius.card,
+          background: tokens.color.panel,
+          boxShadow: tokens.shadow.card,
         }}
       >
         <div
@@ -50,7 +51,7 @@ export function ProjectCard(
               width: 18,
               height: 18,
               borderRadius: 999,
-              background: "#2563eb",
+              background: background.accentColor,
             }}
           />
           opengrapher

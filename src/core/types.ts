@@ -1,6 +1,9 @@
+import type { BackgroundPresetName, GraphPaperBackground } from "../backgrounds/index.ts";
 import type { FontPresetName, TypographyTriad } from "../fonts/types.ts";
+import type { TerminalStyleName } from "../frames/index.ts";
 
 export type OutputFormat = "png" | "svg";
+export type TemplateName = "card" | "terminal";
 
 export type GenerateOptions = {
   title?: string;
@@ -10,6 +13,9 @@ export type GenerateOptions = {
   width?: number;
   height?: number;
   fontPreset?: FontPresetName;
+  background?: BackgroundPresetName;
+  terminal?: TerminalStyleName;
+  template?: TemplateName;
 };
 
 export type ResolvedGenerateOptions = {
@@ -21,6 +27,9 @@ export type ResolvedGenerateOptions = {
   height: number;
   fontPreset: FontPresetName;
   typography: TypographyTriad;
+  background: GraphPaperBackground;
+  terminal: TerminalStyleName;
+  template: TemplateName;
 };
 
 export type FontWeight =
