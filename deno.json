@@ -6,11 +6,10 @@
     "fmt:check": "deno run -A npm:dprint@0.54.0 check"
   },
   "imports": {
-    "@resvg/resvg-js": "npm:@resvg/resvg-js@2.6.2",
     "fflate": "npm:fflate@0.8.2",
     "react": "npm:react@18.3.1",
     "react/jsx-runtime": "npm:react@18.3.1/jsx-runtime",
-    "satori": "npm:satori@0.12.2"
+    "takumi-js": "npm:takumi-js@1.6.0"
   },
   "nodeModulesDir": "auto",
   "compilerOptions": {

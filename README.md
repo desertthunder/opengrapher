@@ -2,8 +2,7 @@
 
 A CLI for generating bespoke Open Graph images from TSX templates.
 
-The current build renders `1200x630` project cards with Satori, rasterizes PNG
-output with Resvg, and can also write SVG output for previews/debugging.
+The current build renders `1200x630` project cards with `takumi-js`.
 
 ## Usage
 
@@ -14,12 +13,6 @@ deno task og \
   --font-preset IBM \
   --background graph-paper-light \
   --out dist/og.png
-```
-
-Write SVG by using a `.svg` output path or `--format svg`:
-
-```sh
-deno task og --title "Opengrapher" --out dist/og.svg
 ```
 
 Render a terminal card:
@@ -45,12 +38,13 @@ release asset `githubnext/monaspace@v1.101`.
 
 ## Background presets
 
-All current backgrounds use Hero Patterns-inspired graph paper.
-
 - `graph-paper-light`
 - `graph-paper-dark`
 - `graph-paper-indigo`
 - `graph-paper-warm`
+- `blobs-soft`
+- `blobs-gooey`
+- `blobs-editorial`
 
 ## Terminal styles
 
@@ -66,11 +60,11 @@ Use these with `--template terminal --terminal <name>`:
 - `--title <text>`: image title
 - `--description <text>`: image description
 - `--out, -o <path>`: output path, defaults to `dist/og.png`
-- `--format <png|svg>`: output format
+- `--format <png>`: output format
 - `--width <number>`: width, defaults to `1200`
 - `--height <number>`: height, defaults to `630`
 - `--font-preset <name>`: `IBM`, `Vercel`, or `Monaspace`
-- `--background <name>`: graph paper background preset
+- `--background <name>`: background preset
 - `--template <name>`: `card` or `terminal`
 - `--terminal <name>`: `mac`, `windows`, `gnome`, or `win95`
 - `--help, -h`: show help

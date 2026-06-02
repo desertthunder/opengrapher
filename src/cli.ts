@@ -1,12 +1,12 @@
 import { parseArgs } from "jsr:@std/cli/parse-args";
-import { isBackgroundPresetName } from "./backgrounds/index.ts";
-import type { BackgroundPresetName } from "./backgrounds/index.ts";
-import { loadConfigFile } from "./core/config-file.ts";
+import { isBackgroundPresetName } from "./core/bg.ts";
+import type { BackgroundPresetName } from "./core/bg.ts";
+import { loadConfigFile } from "./core/config.ts";
+import { isTerminalStyleName } from "./core/frames.ts";
+import type { TerminalStyleName } from "./core/frames.ts";
+import { isFontPresetName } from "./core/presets.ts";
+import type { FontPresetName } from "./core/presets.ts";
 import type { GenerateOptions, OutputFormat, TemplateName } from "./core/types.ts";
-import { isTerminalStyleName } from "./frames/index.ts";
-import type { TerminalStyleName } from "./frames/index.ts";
-import { isFontPresetName } from "./presets/index.ts";
-import type { FontPresetName } from "./presets/index.ts";
 import { generateOg } from "./templates/generated.tsx";
 
 const args = parseArgs(Deno.args, {
@@ -67,8 +67,8 @@ function compactOptions(options: GenerateOptions): GenerateOptions {
 
 function parseFormat(value: unknown): OutputFormat | undefined {
   if (value === undefined) return undefined;
-  if (value === "png" || value === "svg") return value;
-  throw new Error(`Unsupported format: ${value}. Expected "png" or "svg".`);
+  if (value === "png") return value;
+  throw new Error(`Unsupported format: ${value}. Expected "png".`);
 }
 
 function parseFontPreset(value: unknown): FontPresetName | undefined {
@@ -83,7 +83,7 @@ function parseBackground(value: unknown): BackgroundPresetName | undefined {
   if (typeof value === "string" && isBackgroundPresetName(value)) return value;
 
   throw new Error(
-    `Unsupported background: ${value}. Expected graph-paper-light, graph-paper-dark, graph-paper-indigo, or graph-paper-warm.`,
+    `Unsupported background: ${value}. Expected graph-paper-light, graph-paper-dark, graph-paper-indigo, graph-paper-warm, blobs-soft, blobs-gooey, or blobs-editorial.`,
   );
 }
 
@@ -127,11 +127,11 @@ Options:
   --repo <text>         Repository label
   --path <text>         Path label
   --out, -o <path>      Output path, defaults to dist/og.png
-  --format <png|svg>    Output format. Inferred from .svg paths, otherwise png
+  --format <png>        Output format. Takumi currently supports png here
   --width <number>      Width, defaults to 1200
   --height <number>     Height, defaults to 630
   --font-preset <name>  Font preset: IBM, Vercel, or Monaspace
-  --background <name>   graph-paper-light, graph-paper-dark, graph-paper-indigo, or graph-paper-warm
+  --background <name>   graph-paper-light, graph-paper-dark, graph-paper-indigo, graph-paper-warm, blobs-soft, blobs-gooey, or blobs-editorial
   --terminal <name>     mac, windows, gnome, or win95
   --template <name>     card or terminal
   --help, -h            Show this help

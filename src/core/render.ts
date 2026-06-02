@@ -1,6 +1,5 @@
-import { Resvg } from "@resvg/resvg-js";
 import type { ReactNode } from "react";
-import satori from "satori";
+import { render } from "takumi-js";
 import type { FontDefinition, OutputFormat } from "./types.ts";
 
 export type RenderOptions = {
@@ -12,26 +11,12 @@ export type RenderOptions = {
 };
 
 export async function renderImage(options: RenderOptions): Promise<Uint8Array> {
-  const svg = await renderSvg(options);
-
-  if (options.format === "svg") {
-    return new TextEncoder().encode(svg);
-  }
-
-  const renderer = new Resvg(svg, {
-    fitTo: {
-      mode: "width",
-      value: options.width,
-    },
-  });
-
-  return renderer.render().asPng();
-}
-
-export async function renderSvg(options: Omit<RenderOptions, "format">): Promise<string> {
-  return await satori(options.element, {
+  const image = await render(options.element, {
     width: options.width,
     height: options.height,
+    format: options.format,
     fonts: options.fonts,
   });
+
+  return image instanceof Uint8Array ? image : new Uint8Array(image);
 }

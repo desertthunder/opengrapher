@@ -1,10 +1,51 @@
 import { unzipSync } from "fflate";
-import { ensureDir } from "jsr:@std/fs/ensure-dir";
-import { dirname } from "jsr:@std/path";
+import { ensureDir } from "jsr:@std/fs@1.0.24/ensure-dir";
+import { dirname } from "jsr:@std/path@1.1.5/dirname";
 import { getCachedArchivePath, readCachedFont, writeCachedFont } from "./cache.ts";
-import type { GitHubReleaseFontSpec } from "./types.ts";
+import type {
+  FontPreset,
+  FontSourceSpec,
+  FontSpec,
+  GitHubReleaseFontSpec,
+  ResolvedFont,
+} from "./types.ts";
 
-export async function loadGitHubReleaseFont(spec: GitHubReleaseFontSpec): Promise<ArrayBuffer> {
+export async function resolveFonts(preset: FontPreset): Promise<ResolvedFont[]> {
+  return await Promise.all(preset.fonts.map(resolveFont));
+}
+
+async function resolveFont(spec: FontSpec): Promise<ResolvedFont> {
+  const data = spec.provider === "fontsource"
+    ? await loadFontsourceFont(spec)
+    : await loadGitHubReleaseFont(spec);
+
+  return {
+    name: spec.family,
+    data,
+    weight: spec.weight,
+    style: spec.style,
+  };
+}
+
+async function loadFontsourceFont(spec: FontSourceSpec): Promise<ArrayBuffer> {
+  const cached = await readCachedFont(spec);
+  if (cached) return cached;
+
+  const url = getFontsourceUrl(spec);
+  const response = await fetch(url);
+
+  if (!response.ok) {
+    throw new Error(`Could not fetch ${spec.family} from Fontsource: ${url} (${response.status})`);
+  }
+
+  return await writeCachedFont(spec, await response.arrayBuffer(), url);
+}
+
+function getFontsourceUrl(spec: FontSourceSpec): string {
+  return `https://cdn.jsdelivr.net/npm/${spec.package}@${spec.version}/files/${spec.file}`;
+}
+
+async function loadGitHubReleaseFont(spec: GitHubReleaseFontSpec): Promise<ArrayBuffer> {
   const cached = await readCachedFont(spec);
   if (cached) return cached;
 
@@ -20,11 +61,10 @@ export async function loadGitHubReleaseFont(spec: GitHubReleaseFontSpec): Promis
     throw new Error(`Could not find ${spec.path} in ${spec.asset}.${hint}`);
   }
 
-  const data = new Uint8Array(file).buffer;
-  return await writeCachedFont(spec, data, getGitHubReleaseUrl(spec));
+  return await writeCachedFont(spec, new Uint8Array(file).buffer, getGitHubReleaseUrl(spec));
 }
 
-export function getGitHubReleaseUrl(spec: GitHubReleaseFontSpec): string {
+function getGitHubReleaseUrl(spec: GitHubReleaseFontSpec): string {
   return `https://github.com/${spec.owner}/${spec.repo}/releases/download/${spec.version}/${spec.asset}`;
 }
 

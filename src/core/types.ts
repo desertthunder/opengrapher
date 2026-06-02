@@ -1,8 +1,8 @@
-import type { BackgroundPresetName, GraphPaperBackground } from "../backgrounds/index.ts";
 import type { FontPresetName, TypographyTriad } from "../fonts/types.ts";
-import type { TerminalStyleName } from "../frames/index.ts";
+import type { BackgroundPreset, BackgroundPresetName } from "./bg.ts";
+import type { TerminalStyleName } from "./frames.ts";
 
-export type OutputFormat = "png" | "svg";
+export type OutputFormat = "png";
 export type TemplateName = "card" | "terminal";
 
 export type ThemeOptions = {
@@ -46,7 +46,7 @@ export type ResolvedGenerateOptions = {
   height: number;
   fontPreset: FontPresetName;
   typography: TypographyTriad;
-  background: GraphPaperBackground;
+  background: BackgroundPreset;
   terminal: TerminalStyleName;
   template: TemplateName;
   theme: ResolvedTheme;

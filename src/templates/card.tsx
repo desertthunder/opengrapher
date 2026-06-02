@@ -1,6 +1,7 @@
-import { graphPaperBackgroundImage } from "../backgrounds/index.ts";
+import { backgroundImage } from "../core/bg.ts";
 import type { ResolvedGenerateOptions } from "../core/types.ts";
 import { tokens } from "../theme/tokens.ts";
+import { BlobBackdrop } from "./blob.tsx";
 
 export function ProjectCard(
   { title, description, eyebrow, site, repo, path, typography, background, theme, width, height }:
@@ -13,9 +14,11 @@ export function ProjectCard(
         height,
         display: "flex",
         alignItems: "center",
+        position: "relative",
+        overflow: "hidden",
         justifyContent: "center",
         backgroundColor: background.backgroundColor,
-        backgroundImage: graphPaperBackgroundImage(background),
+        backgroundImage: backgroundImage(background),
         backgroundSize: `${background.gridSize}px ${background.gridSize}px`,
         fontFamily: typography.sans,
         color: theme.ink,
@@ -23,6 +26,8 @@ export function ProjectCard(
     >
       <div
         style={{
+          position: "relative",
+          overflow: "hidden",
           width: 980,
           minHeight: 390,
           display: "flex",
@@ -32,9 +37,10 @@ export function ProjectCard(
           border: `1px solid ${tokens.color.border}`,
           borderRadius: tokens.radius.card,
           background: theme.surface,
-          boxShadow: tokens.shadow.card,
+          boxShadow: "none",
         }}
       >
+        {background.kind === "blobs" ? <BlobBackdrop background={background} /> : null}
         <div
           style={{
             display: "flex",
@@ -86,21 +92,23 @@ export function ProjectCard(
           </p>
         </div>
 
-        {(site || repo || path) && (
-          <div
-            style={{
-              display: "flex",
-              gap: 22,
-              color: theme.muted,
-              fontFamily: typography.mono,
-              fontSize: 22,
-            }}
-          >
-            {repo && <span>{repo}</span>}
-            {site && <span>{site}</span>}
-            {path && <span>{path}</span>}
-          </div>
-        )}
+        {site || repo || path
+          ? (
+            <div
+              style={{
+                display: "flex",
+                gap: 22,
+                color: theme.muted,
+                fontFamily: typography.mono,
+                fontSize: 22,
+              }}
+            >
+              {repo ? <span>{repo}</span> : null}
+              {site ? <span>{site}</span> : null}
+              {path ? <span>{path}</span> : null}
+            </div>
+          )
+          : null}
       </div>
     </div>
   );

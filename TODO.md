@@ -7,18 +7,16 @@ components, and helpful errors.
 
 ## Renderer choice
 
-Use **Satori + Resvg** as the first implementation.
+Use **Takumi via `takumi-js`**.
 
 Why:
 
-- Satori is a JS/TS package and is easier to run in Deno via npm imports.
-- The output is SVG, which can be rasterized with `@resvg/resvg-js`.
-- It has a mature ecosystem around React-like JSX OG image templates.
-- It is already common in Astro/Next OG-image workflows.
+- The project is template-heavy and benefits from stronger CSS/layout fidelity.
+- `takumi-js` accepts React/TSX trees and can render PNG directly.
+- It avoids the Satori + Resvg edge cases hit while testing blob/filter-heavy
+  layouts.
 
-Takumi-rs may still be worth tracking, but it is Rust-first. Unless its Deno
-story is a clean npm/WASM package with font loading and image export support,
-Satori will likely be simpler to ship and maintain in this project.
+Current tradeoff: SVG output is not supported by the Takumi renderer path yet.
 
 ## Goals
 
@@ -33,7 +31,7 @@ Satori will likely be simpler to ship and maintain in this project.
 ## Source structure
 
 Optimize the source around the public authoring concepts: render, templates,
-presets, fonts, backgrounds, and frames.
+presets, fonts, background utilities, and frames.
 
 ```txt
 src/
@@ -41,41 +39,24 @@ src/
   mod.ts                 # optional internal exports
 
   core/
-    render.ts            # Satori -> SVG -> Resvg PNG pipeline
+    bg.ts                # graph paper and blob/gooey background presets
     config.ts            # config loading, defaults, validation
+    frames.ts            # terminal/window frame presets
+    presets.ts           # typography/font presets
+    render.ts            # Takumi rendering pipeline
     types.ts             # shared public types
 
   templates/
     generated.tsx        # high-level generateOg(config) orchestration
+    blob.tsx             # blob backdrop component
     card.tsx             # general title/description/url card
-    terminal-card.tsx    # card with terminal/window frame
+    term.tsx             # terminal card and shared terminal frame
     split-card.tsx       # optional image/content split layout
-
-  presets/
-    index.ts
-    ibm.ts               # IBM typography preset
-    vercel.ts            # Geist + Instrument Serif typography preset
-    monaspace.ts         # Monaspace typography preset
 
   fonts/
     cache.ts             # cache dir, read/write, metadata
-    resolve.ts           # turn typography preset into Satori font objects
-    fontsource.ts        # Fontsource fetcher
-    github.ts            # GitHub release/archive fetcher
+    provider.ts          # Fontsource and GitHub release providers
     types.ts
-
-  backgrounds/
-    index.ts
-    graph-paper.ts       # Hero Patterns-inspired graph paper
-    pattern.ts           # shared SVG pattern helpers
-
-  frames/
-    index.ts
-    terminal.tsx         # shared frame component
-    mac.ts
-    windows.ts
-    gnome.ts
-    win95.ts
 
   theme/
     tokens.ts            # spacing, colors, shadows, radii
@@ -322,11 +303,11 @@ Tasks:
 ### Phase 1: Spike
 
 - [x] Add Deno config/tasks.
-- [x] Install or import Satori and Resvg.
+- [x] Install or import Takumi.
 - [x] Render a hard-coded `1200x630` PNG.
 - [x] Load one local or fetched font.
 - [x] Save output to `dist/og.png`.
-- [x] Save SVG output when requested.
+- [x] Save PNG output from Takumi.
 
 ### Phase 2: Font cache
 
@@ -351,7 +332,7 @@ Tasks:
 - [x] Load TOML config files.
 - [x] Let CLI flags override config values.
 - [x] Add richer shared fields: eyebrow, site, repo, path, and theme.
-- [x] Write PNG/SVG output from config.
+- [x] Write PNG output from config.
 - [x] Add useful error messages for missing fonts, bad configs, or bad presets.
 
 ## Parking lot
@@ -362,8 +343,8 @@ Blob effects could give the generator a softer visual mode alongside graph paper
 and terminal chrome. The useful techniques are:
 
 - CSS-style blurred blobs: layered circles/ellipses with large blur, opacity,
-  and multiply/screen-like color choices. These are simple and likely to work
-  well through Satori/Resvg if represented as SVG filters or soft radial shapes.
+  and multiply/screen-like color choices. These need renderer-specific testing
+  before becoming a full background primitive.
 - SVG gooey filters: `feGaussianBlur` followed by `feColorMatrix` to make nearby
   circles merge into one liquid mass. This is best authored as an SVG overlay or
   background primitive, then rasterized by Resvg.
@@ -373,17 +354,21 @@ and terminal chrome. The useful techniques are:
 - Masked gradients: radial gradients clipped to blob paths for softer editorial
   backgrounds.
 
-Proposed integration:
+Implemented integration:
 
-- Add `src/backgrounds/blobs.ts` with deterministic blob presets.
-- Add `src/backgrounds/svg-filter.ts` for reusable blur/gooey filter markup.
-- Expose background names such as `blobs-soft`, `blobs-gooey`, and
-  `blobs-editorial`.
-- Add optional config fields under `[backgroundOptions]` later: `seed`, `count`,
+- Added deterministic blob presets to `src/core/bg.ts`.
+- Added Takumi-safe blob/backdrop rendering inside the card templates.
+- Exposed `blobs-soft`, `blobs-gooey`, and `blobs-editorial` as background
+  names.
+- Kept the first implementation static. Animation is not useful for OG images.
+
+Future work:
+
+- Add optional config fields under `[backgroundOptions]`: `seed`, `count`,
   `blur`, `opacity`, and `palette`.
-- Start with non-animated static SVG blobs. Animation is not useful for OG images.
-- Prefer seeded organic paths for reliability; reserve gooey filters for presets
-  that verify cleanly in Resvg.
+- Revisit real SVG gooey filters after testing Takumi behavior more carefully.
+  The shipped version uses overlapping blobs because it is stable in the current
+  renderer path.
 
 ### Freeze-style code snippet images
 
@@ -409,7 +394,7 @@ Possible direction:
 - Reuse terminal styles: `mac`, `windows`, `gnome`, and `win95`.
 - Support language, theme, line numbers, highlighted lines, filename, and prompt
   text.
-- Output PNG/SVG like the OG templates.
+- Output PNG like the OG templates.
 - Keep it usable as a standalone snippet generator, not only as OG-image chrome.
 
 Hold off until the normal card and config-file workflows are stable.
@@ -433,6 +418,8 @@ Hold off until the normal card and config-file workflows are stable.
 - Cached fonts should be **pinned by version** for reproducibility.
   - Include the package/release version in cache keys and metadata.
   - Avoid silently changing generated images when upstream fonts change.
-- Support **SVG and PNG** output.
-  - SVG is useful for debugging, previews, and sharp scalable output.
-  - PNG should remain the default for Open Graph usage.
+- Support **PNG** output first.
+  - SVG was useful during the Satori spike, but Takumi does not expose SVG
+    output in the current renderer path.
+  - Revisit SVG only if Takumi adds it or if a second renderer mode is worth the
+    added complexity.
