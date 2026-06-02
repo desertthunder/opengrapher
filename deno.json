@@ -1,0 +1,23 @@
+{
+  "tasks": {
+    "og": "deno run --allow-net --allow-read --allow-write --allow-env --allow-ffi --allow-sys src/cli.ts",
+    "check": "deno check src/cli.ts",
+    "fmt": "deno run -A npm:dprint@0.54.0 fmt",
+    "fmt:check": "deno run -A npm:dprint@0.54.0 check"
+  },
+  "imports": {
+    "@resvg/resvg-js": "npm:@resvg/resvg-js@2.6.2",
+    "react": "npm:react@18.3.1",
+    "react/jsx-runtime": "npm:react@18.3.1/jsx-runtime",
+    "satori": "npm:satori@0.12.2"
+  },
+  "nodeModulesDir": "auto",
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    "jsxImportSource": "react",
+    "strict": true,
+    "types": ["npm:@types/react@18.3.3"]
+  },
+  "lint": { "rules": { "tags": ["recommended"] } },
+  "allowScripts": ["npm:dprint@0.54.0"]
+}
