@@ -161,10 +161,12 @@ assets and cache the files locally.
 
 Tasks:
 
-- [ ] Identify stable Monaspace release URLs.
-- [ ] Support GitHub release downloads.
-- [ ] Extract font files if release assets are zip archives.
-- [ ] Cache extracted fonts by version.
+- [x] Identify stable Monaspace release URLs.
+  - Using `githubnext/monaspace` release `v1.101` and asset
+    `monaspace-v1.101.zip`.
+- [x] Support GitHub release downloads.
+- [x] Extract font files if release assets are zip archives.
+- [x] Cache extracted fonts by version.
 
 ## Backgrounds
 
@@ -245,11 +247,11 @@ Tasks:
 
 ### Phase 2: Font cache
 
-- [ ] Implement cache directory resolution.
-- [ ] Implement Fontsource font fetching.
-- [ ] Add `IBM` preset.
-- [ ] Add `Vercel` preset.
-- [ ] Add `Monaspace` GitHub release support.
+- [x] Implement cache directory resolution.
+- [x] Implement Fontsource font fetching.
+- [x] Add `IBM` preset.
+- [x] Add `Vercel` preset.
+- [x] Add `Monaspace` GitHub release support.
 
 ### Phase 3: Templates
 

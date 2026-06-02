@@ -1,6 +1,7 @@
 import { ensureDir } from "jsr:@std/fs@1.0.24/ensure-dir";
 import { dirname } from "jsr:@std/path@1.1.5/dirname";
-import { loadPhaseOneFonts } from "../fonts/ibm.ts";
+import { resolveFonts } from "../fonts/resolve.ts";
+import { getFontPreset } from "../presets/index.ts";
 import { ProjectCard } from "../templates/project-card.tsx";
 import { resolveOptions } from "./config.ts";
 import { renderImage } from "./render.ts";
@@ -8,7 +9,7 @@ import type { GenerateOptions } from "./types.ts";
 
 export async function generateOg(options: GenerateOptions = {}): Promise<void> {
   const resolved = resolveOptions(options);
-  const fonts = await loadPhaseOneFonts();
+  const fonts = await resolveFonts(getFontPreset(resolved.fontPreset));
   const image = await renderImage({
     element: <ProjectCard {...resolved} />,
     fonts,

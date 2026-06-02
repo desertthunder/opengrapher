@@ -1,9 +1,11 @@
 import { parseArgs } from "jsr:@std/cli/parse-args";
 import { generateOg } from "./core/generate.tsx";
 import type { OutputFormat } from "./core/types.ts";
+import { isFontPresetName } from "./presets/index.ts";
+import type { FontPresetName } from "./presets/index.ts";
 
 const args = parseArgs(Deno.args, {
-  string: ["title", "description", "out", "format", "width", "height"],
+  string: ["title", "description", "out", "format", "width", "height", "font-preset"],
   boolean: ["help"],
   alias: {
     h: "help",
@@ -23,12 +25,20 @@ await generateOg({
   format: parseFormat(args.format),
   width: parseNumber(args.width),
   height: parseNumber(args.height),
+  fontPreset: parseFontPreset(args["font-preset"]),
 });
 
 function parseFormat(value: unknown): OutputFormat | undefined {
   if (value === undefined) return undefined;
   if (value === "png" || value === "svg") return value;
   throw new Error(`Unsupported format: ${value}. Expected "png" or "svg".`);
+}
+
+function parseFontPreset(value: unknown): FontPresetName | undefined {
+  if (value === undefined) return undefined;
+  if (typeof value === "string" && isFontPresetName(value)) return value;
+
+  throw new Error(`Unsupported font preset: ${value}. Expected IBM, Vercel, or Monaspace.`);
 }
 
 function parseNumber(value: unknown): number | undefined {
@@ -55,6 +65,7 @@ Options:
   --format <png|svg>    Output format. Inferred from .svg paths, otherwise png
   --width <number>      Width, defaults to 1200
   --height <number>     Height, defaults to 630
+  --font-preset <name>  Font preset: IBM, Vercel, or Monaspace
   --help, -h            Show this help
 `);
 }

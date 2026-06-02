@@ -1,3 +1,4 @@
+import { getFontPreset } from "../presets/index.ts";
 import type { GenerateOptions, OutputFormat, ResolvedGenerateOptions } from "./types.ts";
 
 const DEFAULT_WIDTH = 1200;
@@ -5,6 +6,7 @@ const DEFAULT_HEIGHT = 630;
 
 export function resolveOptions(options: GenerateOptions): ResolvedGenerateOptions {
   const format = resolveFormat(options.format, options.out);
+  const fontPreset = getFontPreset(options.fontPreset);
 
   return {
     title: options.title ?? "Opengrapher",
@@ -13,6 +15,8 @@ export function resolveOptions(options: GenerateOptions): ResolvedGenerateOption
     format,
     width: options.width ?? DEFAULT_WIDTH,
     height: options.height ?? DEFAULT_HEIGHT,
+    fontPreset: fontPreset.name,
+    typography: fontPreset.typography,
   };
 }
 

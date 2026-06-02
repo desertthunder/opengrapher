@@ -1,6 +1,8 @@
 import type { ResolvedGenerateOptions } from "../core/types.ts";
 
-export function ProjectCard({ title, description, width, height }: ResolvedGenerateOptions) {
+export function ProjectCard(
+  { title, description, typography, width, height }: ResolvedGenerateOptions,
+) {
   return (
     <div
       style={{
@@ -13,7 +15,7 @@ export function ProjectCard({ title, description, width, height }: ResolvedGener
         backgroundImage:
           "linear-gradient(#dbe3ef 1px, transparent 1px), linear-gradient(90deg, #dbe3ef 1px, transparent 1px)",
         backgroundSize: "42px 42px",
-        fontFamily: "IBM Plex Sans",
+        fontFamily: typography.sans,
         color: "#111827",
       }}
     >
@@ -38,7 +40,8 @@ export function ProjectCard({ title, description, width, height }: ResolvedGener
             gap: 14,
             color: "#475569",
             fontSize: 28,
-            fontWeight: 700,
+            fontFamily: typography.mono,
+            fontWeight: 400,
             letterSpacing: "-0.02em",
           }}
         >
@@ -60,7 +63,8 @@ export function ProjectCard({ title, description, width, height }: ResolvedGener
               fontSize: 82,
               lineHeight: 0.95,
               letterSpacing: "-0.065em",
-              fontWeight: 700,
+              fontFamily: typography.heading,
+              fontWeight: typography.heading === "Instrument Serif" ? 400 : 700,
               color: "#0f172a",
             }}
           >

@@ -3,11 +3,14 @@
   "specifiers": {
     "jsr:@std/cli@*": "1.0.30",
     "jsr:@std/fs@*": "1.0.24",
+    "jsr:@std/fs@1.0.24": "1.0.24",
     "jsr:@std/internal@^1.0.14": "1.0.14",
     "jsr:@std/path@*": "1.1.5",
+    "jsr:@std/path@1.1.5": "1.1.5",
     "npm:@resvg/resvg-js@2.6.2": "2.6.2",
     "npm:@types/react@18.3.3": "18.3.3",
     "npm:dprint@0.54.0": "0.54.0",
+    "npm:fflate@0.8.2": "0.8.2",
     "npm:react@18.3.1": "18.3.1",
     "npm:satori@0.12.2": "0.12.2"
   },
@@ -164,7 +167,7 @@
     "@shuding/opentype.js@1.4.0-beta.0": {
       "integrity": "sha512-3NgmNyH3l/Hv6EvsWJbsvpcpUba6R8IREQ83nH83cyakCw7uM1arZKNfHwv1Wz6jgqrF/j4x5ELvR6PnK9nTcA==",
       "dependencies": [
-        "fflate",
+        "fflate@0.7.4",
         "string.prototype.codepointat"
       ],
       "bin": true
@@ -237,6 +240,9 @@
     },
     "fflate@0.7.4": {
       "integrity": "sha512-5u2V/CDW15QM1XbbgS+0DfPxVB+jUKhWEKuuFuHncbk3tEEqzmoXL+2KyOFuKGqOnmdIy0/davWF1CkuwtibCw=="
+    },
+    "fflate@0.8.2": {
+      "integrity": "sha512-cPJU47OaAoCbg0pBvzsgpTPhmhqI5eJjh/JIu8tPj5q+T7iLvW/JAYUqmE7KOB4R1ZyEhzBaIQpQpardBF5z8A=="
     },
     "hex-rgb@4.3.0": {
       "integrity": "sha512-Ox1pJVrDCyGHMG9CFg1tmrRUMRPRsAWYc/PinY0XzJU4K7y7vjNoLKIQ7BR5UJMCxNN8EM1MNDmHWA/B3aZUuw=="
@@ -331,6 +337,7 @@
     "dependencies": [
       "npm:@resvg/resvg-js@2.6.2",
       "npm:@types/react@18.3.3",
+      "npm:fflate@0.8.2",
       "npm:react@18.3.1",
       "npm:satori@0.12.2"
     ]

@@ -1,3 +1,5 @@
+import type { FontPresetName, TypographyTriad } from "../fonts/types.ts";
+
 export type OutputFormat = "png" | "svg";
 
 export type GenerateOptions = {
@@ -7,6 +9,7 @@ export type GenerateOptions = {
   format?: OutputFormat;
   width?: number;
   height?: number;
+  fontPreset?: FontPresetName;
 };
 
 export type ResolvedGenerateOptions = {
@@ -16,6 +19,8 @@ export type ResolvedGenerateOptions = {
   format: OutputFormat;
   width: number;
   height: number;
+  fontPreset: FontPresetName;
+  typography: TypographyTriad;
 };
 
 export type FontWeight =
