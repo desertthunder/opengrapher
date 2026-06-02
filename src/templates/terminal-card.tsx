@@ -4,9 +4,23 @@ import { getTerminalTheme } from "../frames/index.ts";
 import { TerminalFrame } from "../frames/terminal.tsx";
 
 export function TerminalCard(
-  { title, description, typography, background, terminal, width, height }: ResolvedGenerateOptions,
+  {
+    title,
+    description,
+    eyebrow,
+    site,
+    repo,
+    path,
+    typography,
+    background,
+    terminal,
+    theme,
+    width,
+    height,
+  }: ResolvedGenerateOptions,
 ) {
-  const theme = getTerminalTheme(terminal);
+  const terminalTheme = getTerminalTheme(terminal);
+  const label = eyebrow || path || repo || site || `terminal / ${terminalTheme.name}`;
 
   return (
     <div
@@ -21,7 +35,7 @@ export function TerminalCard(
         backgroundImage: graphPaperBackgroundImage(background),
         backgroundSize: `${background.gridSize}px ${background.gridSize}px`,
         fontFamily: typography.sans,
-        color: "#111827",
+        color: theme.ink,
       }}
     >
       <div style={{ display: "flex", flexDirection: "column", width: 980, gap: 28 }}>
@@ -29,18 +43,18 @@ export function TerminalCard(
           <div
             style={{
               display: "flex",
-              color: background.accentColor,
+              color: theme.accent,
               fontFamily: typography.mono,
               fontSize: 24,
             }}
           >
-            terminal / {theme.name}
+            {label}
           </div>
           <h1
             style={{
               display: "flex",
               margin: 0,
-              color: theme.name === "mac" ? "#0f172a" : background.accentColor,
+              color: terminalTheme.name === "mac" ? theme.ink : theme.accent,
               fontFamily: typography.heading,
               fontSize: 64,
               fontWeight: typography.heading === "Instrument Serif" ? 400 : 700,
@@ -51,7 +65,7 @@ export function TerminalCard(
             {title}
           </h1>
         </div>
-        <TerminalFrame title="opengrapher" theme={theme}>
+        <TerminalFrame title={site || "opengrapher"} theme={terminalTheme}>
           <div
             style={{
               display: "flex",
@@ -61,10 +75,16 @@ export function TerminalCard(
             }}
           >
             <div style={{ display: "flex", fontSize: 28 }}>
-              <span style={{ color: background.accentColor }}>$</span>
-              <span>&nbsp;deno task og --template terminal</span>
+              <span style={{ color: theme.accent }}>$</span>
+              <span>&nbsp;{path || "deno task og --template terminal"}</span>
             </div>
             <div style={{ display: "flex", fontSize: 34, lineHeight: 1.28 }}>{description}</div>
+            {(repo || site) && (
+              <div style={{ display: "flex", gap: 20, color: theme.muted, fontSize: 22 }}>
+                {repo && <span>{repo}</span>}
+                {site && <span>{site}</span>}
+              </div>
+            )}
           </div>
         </TerminalFrame>
       </div>

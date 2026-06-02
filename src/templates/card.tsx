@@ -3,7 +3,8 @@ import type { ResolvedGenerateOptions } from "../core/types.ts";
 import { tokens } from "../theme/tokens.ts";
 
 export function ProjectCard(
-  { title, description, typography, background, width, height }: ResolvedGenerateOptions,
+  { title, description, eyebrow, site, repo, path, typography, background, theme, width, height }:
+    ResolvedGenerateOptions,
 ) {
   return (
     <div
@@ -17,7 +18,7 @@ export function ProjectCard(
         backgroundImage: graphPaperBackgroundImage(background),
         backgroundSize: `${background.gridSize}px ${background.gridSize}px`,
         fontFamily: typography.sans,
-        color: "#111827",
+        color: theme.ink,
       }}
     >
       <div
@@ -30,7 +31,7 @@ export function ProjectCard(
           padding: "56px 64px",
           border: `1px solid ${tokens.color.border}`,
           borderRadius: tokens.radius.card,
-          background: tokens.color.panel,
+          background: theme.surface,
           boxShadow: tokens.shadow.card,
         }}
       >
@@ -39,7 +40,7 @@ export function ProjectCard(
             display: "flex",
             alignItems: "center",
             gap: 14,
-            color: "#475569",
+            color: theme.muted,
             fontSize: 28,
             fontFamily: typography.mono,
             fontWeight: 400,
@@ -51,10 +52,10 @@ export function ProjectCard(
               width: 18,
               height: 18,
               borderRadius: 999,
-              background: background.accentColor,
+              background: theme.accent,
             }}
           />
-          opengrapher
+          {eyebrow}
         </div>
 
         <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
@@ -66,7 +67,7 @@ export function ProjectCard(
               letterSpacing: "-0.065em",
               fontFamily: typography.heading,
               fontWeight: typography.heading === "Instrument Serif" ? 400 : 700,
-              color: "#0f172a",
+              color: theme.ink,
             }}
           >
             {title}
@@ -78,12 +79,28 @@ export function ProjectCard(
               fontSize: 34,
               lineHeight: 1.25,
               letterSpacing: "-0.025em",
-              color: "#475569",
+              color: theme.muted,
             }}
           >
             {description}
           </p>
         </div>
+
+        {(site || repo || path) && (
+          <div
+            style={{
+              display: "flex",
+              gap: 22,
+              color: theme.muted,
+              fontFamily: typography.mono,
+              fontSize: 22,
+            }}
+          >
+            {repo && <span>{repo}</span>}
+            {site && <span>{site}</span>}
+            {path && <span>{path}</span>}
+          </div>
+        )}
       </div>
     </div>
   );

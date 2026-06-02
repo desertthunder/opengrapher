@@ -1,0 +1,19 @@
+title = "Owais' Places"
+description = "A digital garden by desertthunder.dev"
+eyebrow = "garden.desertthunder.dev"
+site = "garden.desertthunder.dev"
+repo = "github.com/desertthunder/garden"
+path = "~/places"
+out = "dist/examples/garden.png"
+
+template = "terminal"
+fontPreset = "IBM"
+background = "graph-paper-dark"
+terminal = "mac"
+
+[theme]
+accent = "#4d9375"
+surface = "rgba(24, 24, 24, 0.92)"
+ink = "#dbd7ca"
+muted = "#bfbaaa"
+highlight = "#d4976c"

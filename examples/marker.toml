@@ -1,0 +1,19 @@
+title = "Read with intention."
+description = "A mobile browser for reading and thinking."
+eyebrow = "github.com/stormlightlabs/marker"
+site = "marker.stormlightlabs.org"
+repo = "github.com/stormlightlabs/marker"
+path = "marker/website"
+out = "dist/examples/marker.png"
+
+template = "card"
+fontPreset = "Vercel"
+background = "graph-paper-light"
+terminal = "mac"
+
+[theme]
+accent = "#2d6cdf"
+surface = "rgba(246, 245, 240, 0.92)"
+ink = "#111111"
+muted = "#77736b"
+highlight = "#ffd85a"

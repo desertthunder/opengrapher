@@ -1,7 +1,8 @@
 import { parseArgs } from "jsr:@std/cli/parse-args";
 import { isBackgroundPresetName } from "./backgrounds/index.ts";
 import type { BackgroundPresetName } from "./backgrounds/index.ts";
-import type { OutputFormat, TemplateName } from "./core/types.ts";
+import { loadConfigFile } from "./core/config-file.ts";
+import type { GenerateOptions, OutputFormat, TemplateName } from "./core/types.ts";
 import { isTerminalStyleName } from "./frames/index.ts";
 import type { TerminalStyleName } from "./frames/index.ts";
 import { isFontPresetName } from "./presets/index.ts";
@@ -10,8 +11,13 @@ import { generateOg } from "./templates/generated.tsx";
 
 const args = parseArgs(Deno.args, {
   string: [
+    "config",
     "title",
     "description",
+    "eyebrow",
+    "site",
+    "repo",
+    "path",
     "out",
     "format",
     "width",
@@ -33,9 +39,14 @@ if (args.help) {
   Deno.exit(0);
 }
 
-await generateOg({
+const config = await loadConfigFile(args.config);
+const flags = compactOptions({
   title: args.title,
   description: args.description,
+  eyebrow: args.eyebrow,
+  site: args.site,
+  repo: args.repo,
+  path: args.path,
   out: args.out,
   format: parseFormat(args.format),
   width: parseNumber(args.width),
@@ -45,6 +56,14 @@ await generateOg({
   terminal: parseTerminal(args.terminal),
   template: parseTemplate(args.template),
 });
+
+await generateOg({ ...config, ...flags });
+
+function compactOptions(options: GenerateOptions): GenerateOptions {
+  return Object.fromEntries(
+    Object.entries(options).filter(([, value]) => value !== undefined),
+  ) as GenerateOptions;
+}
 
 function parseFormat(value: unknown): OutputFormat | undefined {
   if (value === undefined) return undefined;
@@ -100,8 +119,13 @@ Usage:
   deno task og --title "Opengrapher" --description "Bespoke OG images" --out dist/og.png
 
 Options:
+  --config <path>       TOML or JSON config file
   --title <text>        Image title
   --description <text>  Image description
+  --eyebrow <text>      Small label above the title
+  --site <text>         Site URL or label
+  --repo <text>         Repository label
+  --path <text>         Path label
   --out, -o <path>      Output path, defaults to dist/og.png
   --format <png|svg>    Output format. Inferred from .svg paths, otherwise png
   --width <number>      Width, defaults to 1200

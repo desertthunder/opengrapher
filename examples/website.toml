@@ -1,0 +1,19 @@
+title = "Owais Jamil"
+description = "Software Engineer & Writer with a passion for learning."
+eyebrow = "Desert Thunder"
+site = "desertthunder.dev"
+repo = "github.com/desertthunder"
+path = "owais@portfolio"
+out = "dist/examples/website.png"
+
+template = "terminal"
+fontPreset = "Monaspace"
+background = "graph-paper-dark"
+terminal = "mac"
+
+[theme]
+accent = "#3b82f6"
+surface = "rgba(10, 10, 10, 0.94)"
+ink = "#e2e8f0"
+muted = "#64748b"
+highlight = "#60a5fa"

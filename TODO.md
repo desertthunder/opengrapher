@@ -22,8 +22,8 @@ Satori will likely be simpler to ship and maintain in this project.
 
 ## Goals
 
-- Generate `1200x630` OG images from a simple CLI or library API.
-- Support project-specific templates and reusable presets.
+- Generate `1200x630` OG images from a simple CLI.
+- Support reusable templates, font presets, and config files.
 - Fetch and cache fonts at runtime.
 - Provide typography triads: heading, sans, mono.
 - Provide terminal/window frame styles.
@@ -38,7 +38,7 @@ presets, fonts, backgrounds, and frames.
 ```txt
 src/
   cli.ts                 # CLI entry: parse args, load config, call generateOg()
-  mod.ts                 # public library exports
+  mod.ts                 # optional internal exports
 
   core/
     render.ts            # Satori -> SVG -> Resvg PNG pipeline
@@ -53,10 +53,9 @@ src/
 
   presets/
     index.ts
-    ibm.ts               # IBM typography/theme preset
-    vercel.ts            # Geist + Instrument Serif typography/theme preset
-    monaspace.ts         # Monaspace typography/theme preset
-    projects.ts          # garden, website, marker presets after review
+    ibm.ts               # IBM typography preset
+    vercel.ts            # Geist + Instrument Serif typography preset
+    monaspace.ts         # Monaspace typography preset
 
   fonts/
     cache.ts             # cache dir, read/write, metadata
@@ -81,29 +80,36 @@ src/
   theme/
     tokens.ts            # spacing, colors, shadows, radii
     css.ts               # small helpers for style objects
+
+examples/
+  garden.toml            # reference config, not built-in API
+  website.toml
+  marker.toml
+  basic.json             # JSON config example
 ```
+
+Config files should be treated as the main customization surface. The reference
+projects are examples and visual tests, not hardcoded project presets.
 
 Suggested package boundary:
 
-- `src/mod.ts` exports the useful library API.
-- `src/cli.ts` stays thin and uses the same API as users.
+- `src/cli.ts` is the public entry point.
 - templates receive normalized config, never raw CLI args.
-- presets are plain objects or functions, so users can inspect and override them.
+- font presets are plain objects so users can inspect and override them.
+- reference project settings live in `examples/` as TOML/JSON configs.
 
 ## CLI sketch
 
 ```sh
 deno task og \
+  --config examples/garden.toml \
   --title "Project title" \
-  --description "Short project description" \
-  --preset astro-project \
-  --font-preset IBM \
-  --terminal mac \
   --out ./public/og.png
 ```
 
 Potential flags:
 
+- `--config`
 - `--title`
 - `--description`
 - `--eyebrow`
@@ -116,6 +122,39 @@ Potential flags:
 - `--out`
 - `--width`
 - `--height`
+
+## Config files
+
+Support TOML and JSON. TOML should be the friendlier hand-written format;
+JSON should be available for generated configs and tool interop.
+
+Example TOML:
+
+```toml
+title = "Read with intention."
+description = "A mobile browser for reading and thinking."
+eyebrow = "github.com/stormlightlabs/marker"
+site = "marker.stormlightlabs.org"
+out = "dist/marker.png"
+
+template = "terminal"
+fontPreset = "Vercel"
+background = "graph-paper-light"
+terminal = "mac"
+
+[theme]
+accent = "#2d6cdf"
+surface = "#f6f5f0"
+ink = "#111111"
+muted = "#77736b"
+highlight = "#ffd85a"
+```
+
+Rules:
+
+- CLI flags override config values.
+- Unknown keys should produce a helpful warning or error.
+- Config examples should live in `examples/` and double as visual tests.
 
 ## Font system
 
@@ -258,7 +297,7 @@ Research notes:
     `og:image`, explicit `og:image:width` and `og:image:height`, and Twitter
     summary-large tags.
 
-Recurring fields to support in project presets:
+Recurring fields to support in config files:
 
 - title/headline
 - description/subtitle
@@ -274,8 +313,9 @@ Tasks:
 
 - [x] Inspect current OG images and metadata conventions.
 - [x] Note recurring content fields across projects.
-- [ ] Create project presets for each reference project.
-- [ ] Generate comparison images and iterate.
+- [x] Create `examples/garden.toml`, `examples/website.toml`, and
+      `examples/marker.toml`.
+- [x] Generate comparison images from the example configs and iterate.
 
 ## Implementation phases
 
@@ -304,15 +344,46 @@ Tasks:
 - [x] Add terminal style presets.
 - [x] Add theme tokens for colors, spacing, radius, and shadows.
 
-### Phase 4: CLI
+### Phase 4: CLI and config
 
-- [ ] Parse CLI flags.
-- [ ] Load JSON/YAML config files if present.
-- [ ] Support project presets.
-- [ ] Write PNG output.
-- [ ] Add useful error messages for missing fonts or bad presets.
+- [x] Parse CLI flags.
+- [x] Load JSON config files.
+- [x] Load TOML config files.
+- [x] Let CLI flags override config values.
+- [x] Add richer shared fields: eyebrow, site, repo, path, and theme.
+- [x] Write PNG/SVG output from config.
+- [x] Add useful error messages for missing fonts, bad configs, or bad presets.
 
 ## Parking lot
+
+### Blob, gooey, and liquid background effects
+
+Blob effects could give the generator a softer visual mode alongside graph paper
+and terminal chrome. The useful techniques are:
+
+- CSS-style blurred blobs: layered circles/ellipses with large blur, opacity,
+  and multiply/screen-like color choices. These are simple and likely to work
+  well through Satori/Resvg if represented as SVG filters or soft radial shapes.
+- SVG gooey filters: `feGaussianBlur` followed by `feColorMatrix` to make nearby
+  circles merge into one liquid mass. This is best authored as an SVG overlay or
+  background primitive, then rasterized by Resvg.
+- Organic SVG paths: seeded blob paths made from points around a circle with
+  jittered radii. This gives deterministic, reproducible blobs without relying
+  on heavy filter effects.
+- Masked gradients: radial gradients clipped to blob paths for softer editorial
+  backgrounds.
+
+Proposed integration:
+
+- Add `src/backgrounds/blobs.ts` with deterministic blob presets.
+- Add `src/backgrounds/svg-filter.ts` for reusable blur/gooey filter markup.
+- Expose background names such as `blobs-soft`, `blobs-gooey`, and
+  `blobs-editorial`.
+- Add optional config fields under `[backgroundOptions]` later: `seed`, `count`,
+  `blur`, `opacity`, and `palette`.
+- Start with non-animated static SVG blobs. Animation is not useful for OG images.
+- Prefer seeded organic paths for reliability; reserve gooey filters for presets
+  that verify cleanly in Resvg.
 
 ### Freeze-style code snippet images
 
@@ -341,7 +412,7 @@ Possible direction:
 - Output PNG/SVG like the OG templates.
 - Keep it usable as a standalone snippet generator, not only as OG-image chrome.
 
-Hold off until the normal card and project-preset workflows are stable.
+Hold off until the normal card and config-file workflows are stable.
 
 ## Decisions
 
@@ -354,8 +425,11 @@ Hold off until the normal card and project-preset workflows are stable.
 - The project should ship as a **CLI**.
   - Keep internals modular, but optimize the public surface for commands and
     config files rather than a library API.
-- Project presets should live **in this repo**.
-  - Add presets for garden, website, and marker after reviewing them.
+- Reference projects should be **examples, not built-in project presets**.
+  - Add `examples/garden.toml`, `examples/website.toml`, and
+    `examples/marker.toml`.
+  - Keep built-in presets focused on reusable choices like fonts, backgrounds,
+    and terminal styles.
 - Cached fonts should be **pinned by version** for reproducibility.
   - Include the package/release version in cache keys and metadata.
   - Avoid silently changing generated images when upstream fonts change.

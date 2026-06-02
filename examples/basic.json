@@ -1,0 +1,17 @@
+{
+  "title": "JSON config",
+  "description": "A small JSON example for generated configs and tooling.",
+  "eyebrow": "examples/basic.json",
+  "out": "dist/examples/basic-json.png",
+  "template": "card",
+  "fontPreset": "IBM",
+  "background": "graph-paper-indigo",
+  "terminal": "mac",
+  "theme": {
+    "accent": "#4f46e5",
+    "surface": "rgba(255, 255, 255, 0.9)",
+    "ink": "#111827",
+    "muted": "#475569",
+    "highlight": "#facc15"
+  }
+}

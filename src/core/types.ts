@@ -5,9 +5,23 @@ import type { TerminalStyleName } from "../frames/index.ts";
 export type OutputFormat = "png" | "svg";
 export type TemplateName = "card" | "terminal";
 
+export type ThemeOptions = {
+  accent?: string;
+  surface?: string;
+  ink?: string;
+  muted?: string;
+  highlight?: string;
+};
+
+export type ResolvedTheme = Required<ThemeOptions>;
+
 export type GenerateOptions = {
   title?: string;
   description?: string;
+  eyebrow?: string;
+  site?: string;
+  repo?: string;
+  path?: string;
   out?: string;
   format?: OutputFormat;
   width?: number;
@@ -16,11 +30,16 @@ export type GenerateOptions = {
   background?: BackgroundPresetName;
   terminal?: TerminalStyleName;
   template?: TemplateName;
+  theme?: ThemeOptions;
 };
 
 export type ResolvedGenerateOptions = {
   title: string;
   description: string;
+  eyebrow: string;
+  site: string;
+  repo: string;
+  path: string;
   out: string;
   format: OutputFormat;
   width: number;
@@ -30,6 +49,7 @@ export type ResolvedGenerateOptions = {
   background: GraphPaperBackground;
   terminal: TerminalStyleName;
   template: TemplateName;
+  theme: ResolvedTheme;
 };
 
 export type FontWeight =
