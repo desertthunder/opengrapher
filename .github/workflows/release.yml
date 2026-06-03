@@ -1,0 +1,55 @@
+name: Release binaries
+
+on:
+  release:
+    types: [created]
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    name: Build ${{ matrix.target }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - target: x86_64-unknown-linux-gnu
+            artifact: opengrapher-linux-x86_64
+          - target: x86_64-apple-darwin
+            artifact: opengrapher-macos-x86_64
+          - target: aarch64-apple-darwin
+            artifact: opengrapher-macos-aarch64
+          - target: x86_64-pc-windows-msvc
+            artifact: opengrapher-windows-x86_64.exe
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Deno
+        uses: denoland/setup-deno@v2
+        with:
+          deno-version: v2.x
+
+      - name: Check
+        run: deno task check
+
+      - name: Compile
+        run: |
+          deno compile \
+            --target ${{ matrix.target }} \
+            --allow-net \
+            --allow-read \
+            --allow-write \
+            --allow-env \
+            --allow-ffi \
+            --allow-sys \
+            --output dist/${{ matrix.artifact }} \
+            src/cli.ts
+
+      - name: Upload release asset
+        uses: softprops/action-gh-release@v2
+        with:
+          files: dist/${{ matrix.artifact }}
