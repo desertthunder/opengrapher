@@ -1,12 +1,19 @@
 {
   "tasks": {
     "og": "deno run --allow-net --allow-read --allow-write --allow-env --allow-ffi --allow-sys src/cli.ts",
+    "docs:build": "deno run --allow-net=cdn.jsdelivr.net --allow-read --allow-write src/scripts/docs.tsx",
     "check": "deno check src/cli.ts",
     "fmt": "deno run -A npm:dprint@0.54.0 fmt",
     "fmt:check": "deno run -A npm:dprint@0.54.0 check"
   },
   "imports": {
     "fflate": "npm:fflate@0.8.2",
+    "highlight.js": "npm:highlight.js@11.11.1",
+    "hono/html": "jsr:@hono/hono@4.10.7/html",
+    "hono/jsx": "jsr:@hono/hono@4.10.7/jsx",
+    "hono/jsx/dom/server": "jsr:@hono/hono@4.10.7/jsx/dom/server",
+    "hono/jsx/jsx-runtime": "jsr:@hono/hono@4.10.7/jsx/jsx-runtime",
+    "marked": "npm:marked@16.2.1",
     "react": "npm:react@18.3.1",
     "react/jsx-runtime": "npm:react@18.3.1/jsx-runtime",
     "takumi-js": "npm:takumi-js@1.6.0"

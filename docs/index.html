@@ -1,0 +1,335 @@
+<!doctype html>
+<!-- generated via docs.tsx -->
+<html lang="en"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/><meta name="description" content="Generate bespoke Open Graph PNGs from TSX templates."/><link rel="icon" href="./assets/favicon.svg" type="image/svg+xml"/><title>OpenGrapher</title><style>
+@font-face {
+  font-family: "Zalando Sans";
+  src: url("./assets/fonts/zalando-sans-latin-700-normal.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Zalando Sans";
+  src: url("./assets/fonts/zalando-sans-latin-800-normal.woff2") format("woff2");
+  font-weight: 800;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "JetBrains Mono";
+  src: url("./assets/fonts/jetbrains-mono-latin-400-normal.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "JetBrains Mono";
+  src: url("./assets/fonts/jetbrains-mono-latin-700-normal.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  --bg: #111827;
+  --text: #FCFBF8;
+  --accent: #D5E27B;
+  --muted: color-mix(in srgb, var(--text), transparent 28%);
+  --soft: color-mix(in srgb, var(--text), transparent 82%);
+  --line: color-mix(in srgb, var(--accent), transparent 72%);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  background: var(--bg);
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 16px;
+  line-height: 1.7;
+}
+
+.site-shell {
+  width: min(880px, calc(100% - 32px));
+  margin: 0 auto;
+  padding: 72px 0 88px;
+}
+
+.content > * {
+  max-width: 760px;
+}
+
+.content h1,
+.content h2,
+.content h3 {
+  font-family: "Zalando Sans", Inter, system-ui, sans-serif;
+  font-weight: 800;
+  line-height: 1.04;
+  letter-spacing: -0.045em;
+}
+
+.content h1 {
+  margin: 0 0 24px;
+  max-width: 840px;
+  color: var(--accent);
+  font-size: clamp(3rem, 7vw, 5.5rem);
+}
+
+.content h2 {
+  margin-top: 72px;
+  color: var(--accent);
+  font-size: clamp(2rem, 5vw, 3.8rem);
+}
+
+.content h3 {
+  margin-top: 36px;
+  font-size: 1.45rem;
+}
+
+.content p,
+.content li {
+  color: var(--muted);
+}
+
+.content strong {
+  color: var(--text);
+}
+
+.content a {
+  color: var(--accent);
+  text-decoration-thickness: 0.08em;
+  text-underline-offset: 0.18em;
+}
+
+.content ul,
+.content ol {
+  padding-left: 1.25rem;
+}
+
+.content li + li {
+  margin-top: 0.45rem;
+}
+
+.content pre {
+  max-width: 100%;
+  overflow-x: auto;
+  margin: 28px 0;
+  padding: 20px;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: rgb(0 0 0 / 0.28);
+  box-shadow: 0 20px 70px rgb(0 0 0 / 0.18);
+}
+
+.content code {
+  font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.92em;
+}
+
+.content :not(pre) > code {
+  padding: 0.14em 0.34em;
+  border: 1px solid var(--soft);
+  border-radius: 6px;
+  color: var(--text);
+  background: rgb(255 255 255 / 0.06);
+}
+
+.content blockquote {
+  margin: 32px 0;
+  padding-left: 20px;
+  border-left: 3px solid var(--accent);
+}
+
+.content table {
+  display: block;
+  max-width: 100%;
+  overflow-x: auto;
+  border-collapse: collapse;
+}
+
+.content th,
+.content td {
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--soft);
+  text-align: left;
+}
+
+.site-footer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px 24px;
+  margin-top: 72px;
+  padding-top: 24px;
+  border-top: 1px solid var(--soft);
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.site-footer a {
+  color: var(--accent);
+  text-decoration-thickness: 0.08em;
+  text-underline-offset: 0.18em;
+}
+
+.hljs-keyword,
+.hljs-title,
+.hljs-selector-tag,
+.hljs-built_in {
+  color: var(--accent);
+}
+
+.hljs-string,
+.hljs-attr,
+.hljs-number,
+.hljs-literal {
+  color: var(--text);
+}
+
+.hljs-comment {
+  color: color-mix(in srgb, var(--text), transparent 52%);
+}
+</style></head><body><main class="site-shell"><article class="content"><h1>OpenGrapher</h1>
+<p>A Deno CLI for rendering bespoke <code>1200x630</code> Open Graph PNGs from TSX
+templates. It is built for project pages, launches, docs sites, and any place
+where a generic social image feels a little too generic.</p>
+<p>Define the text, pick a template, choose a font preset, and write the image to
+<code>dist/og.png</code>.</p>
+<pre><code class="hljs language-sh">deno task og \
+  --title <span class="hljs-string">&quot;Opengrapher&quot;</span> \
+  --description <span class="hljs-string">&quot;Bespoke Open Graph images from TSX templates.&quot;</span> \
+  --font-preset IBM \
+  --background graph-paper-light \
+  --out dist/og.png</code></pre><h2>What it does</h2>
+<ul>
+<li>Renders Open Graph PNGs with <code>takumi-js</code>.</li>
+<li>Supports card and terminal-style templates.</li>
+<li>Fetches and caches font files at runtime.</li>
+<li>Reads TOML or JSON config files.</li>
+<li>Ships graph-paper and SVG blob background presets.</li>
+<li>Lets CLI flags override config values for one-off renders.</li>
+</ul>
+<h2>Render from config</h2>
+<p>Keep repeatable image settings in a config file and pass it to the CLI.</p>
+<pre><code class="hljs language-sh">deno task og --config examples/marker.toml</code></pre><pre><code class="hljs language-toml"><span class="hljs-attr">title</span> = <span class="hljs-string">&quot;Read with intention.&quot;</span>
+<span class="hljs-attr">description</span> = <span class="hljs-string">&quot;A mobile browser for reading and thinking.&quot;</span>
+<span class="hljs-attr">eyebrow</span> = <span class="hljs-string">&quot;github.com/stormlightlabs/marker&quot;</span>
+<span class="hljs-attr">site</span> = <span class="hljs-string">&quot;marker.stormlightlabs.org&quot;</span>
+<span class="hljs-attr">out</span> = <span class="hljs-string">&quot;dist/marker.png&quot;</span>
+
+<span class="hljs-attr">template</span> = <span class="hljs-string">&quot;card&quot;</span>
+<span class="hljs-attr">fontPreset</span> = <span class="hljs-string">&quot;Vercel&quot;</span>
+<span class="hljs-attr">background</span> = <span class="hljs-string">&quot;graph-paper-light&quot;</span>
+<span class="hljs-attr">terminal</span> = <span class="hljs-string">&quot;mac&quot;</span>
+
+<span class="hljs-section">[theme]</span>
+<span class="hljs-attr">accent</span> = <span class="hljs-string">&quot;#2d6cdf&quot;</span>
+<span class="hljs-attr">surface</span> = <span class="hljs-string">&quot;#f6f5f0&quot;</span>
+<span class="hljs-attr">ink</span> = <span class="hljs-string">&quot;#111111&quot;</span>
+<span class="hljs-attr">muted</span> = <span class="hljs-string">&quot;#77736b&quot;</span>
+<span class="hljs-attr">highlight</span> = <span class="hljs-string">&quot;#ffd85a&quot;</span></code></pre><h2>Templates</h2>
+<p>Use <code>card</code> for a clean project graphic with title, description, labels, and
+background presets.</p>
+<p>Use <code>terminal</code> when the image should look like a shell or app window. Terminal
+frames include <code>mac</code>, <code>windows</code>, <code>gnome</code>, and <code>win95</code>.</p>
+<pre><code class="hljs language-sh">deno task og \
+  --template terminal \
+  --terminal mac \
+  --title <span class="hljs-string">&quot;Mac Terminal&quot;</span> \
+  --description <span class="hljs-string">&quot;Reusable window chrome for OG images.&quot;</span> \
+  --out dist/mac.png</code></pre><h2>Font presets</h2>
+<p>Opengrapher includes three font presets:</p>
+<ul>
+<li><code>IBM</code>: IBM Plex Serif, IBM Plex Sans, IBM Plex Mono</li>
+<li><code>Vercel</code>: Instrument Serif, Geist Sans, Geist Mono</li>
+<li><code>Monaspace</code>: Monaspace Radon, Monaspace Neon, Monaspace Argon</li>
+</ul>
+<p>Font files are downloaded on demand and cached in
+<code>.cache/opengrapher/fonts</code>. Fontsource presets use pinned package versions.
+Monaspace uses the pinned GitHub release asset <code>githubnext/monaspace@v1.101</code>.</p>
+<h2>Backgrounds</h2>
+<p>Graph-paper backgrounds are available in light, dark, indigo, and warm variants.
+Blob backgrounds are deterministic SVG overlays with soft, gooey, editorial,
+solid, and duotone presets.</p>
+<p>The gooey preset uses SVG filter primitives instead of CSS filters so output is
+more reliable when rendered through Takumi.</p>
+<h2>CLI options</h2>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>--config &lt;path&gt;</code></td>
+<td>TOML or JSON config file</td>
+</tr>
+<tr>
+<td><code>--title &lt;text&gt;</code></td>
+<td>Main image title</td>
+</tr>
+<tr>
+<td><code>--description &lt;text&gt;</code></td>
+<td>Supporting copy</td>
+</tr>
+<tr>
+<td><code>--eyebrow &lt;text&gt;</code></td>
+<td>Small label above the title</td>
+</tr>
+<tr>
+<td><code>--site &lt;text&gt;</code></td>
+<td>Site URL or label</td>
+</tr>
+<tr>
+<td><code>--repo &lt;text&gt;</code></td>
+<td>Repository label</td>
+</tr>
+<tr>
+<td><code>--path &lt;text&gt;</code></td>
+<td>Path or terminal command label</td>
+</tr>
+<tr>
+<td><code>--out, -o &lt;path&gt;</code></td>
+<td>Output path, defaults to <code>dist/og.png</code></td>
+</tr>
+<tr>
+<td><code>--width &lt;number&gt;</code></td>
+<td>Width, defaults to <code>1200</code></td>
+</tr>
+<tr>
+<td><code>--height &lt;number&gt;</code></td>
+<td>Height, defaults to <code>630</code></td>
+</tr>
+<tr>
+<td><code>--font-preset &lt;name&gt;</code></td>
+<td><code>IBM</code>, <code>Vercel</code>, or <code>Monaspace</code></td>
+</tr>
+<tr>
+<td><code>--background &lt;name&gt;</code></td>
+<td>Background preset</td>
+</tr>
+<tr>
+<td><code>--template &lt;name&gt;</code></td>
+<td><code>card</code> or <code>terminal</code></td>
+</tr>
+<tr>
+<td><code>--terminal &lt;name&gt;</code></td>
+<td><code>mac</code>, <code>windows</code>, <code>gnome</code>, or <code>win95</code></td>
+</tr>
+</tbody></table>
+<h2>Install locally</h2>
+<p>Clone the repo, then run the CLI through the Deno task.</p>
+<pre><code class="hljs language-sh">git <span class="hljs-built_in">clone</span> https://github.com/stormlightlabs/opengrapher.git
+<span class="hljs-built_in">cd</span> opengrapher
+deno task og --<span class="hljs-built_in">help</span></code></pre><p>Opengrapher is MIT licensed.</p>
+</article><footer class="site-footer"><a href="https://github.com/stormlightlabs/opengrapher">GitHub</a><a href="https://desertthunder.dev">desertthunder.dev</a></footer></main></body></html>
