@@ -4,6 +4,7 @@ import { getTerminalTheme } from "../core/frames.ts";
 import type { TerminalFrameTheme } from "../core/frames.ts";
 import type { ResolvedGenerateOptions } from "../core/types.ts";
 import { BlobBackdrop } from "./blob.tsx";
+import { FluentIcon } from "./icons.tsx";
 
 export type TerminalFrameProps = {
   title?: string;
@@ -28,15 +29,17 @@ export function TerminalCard(
   }: ResolvedGenerateOptions,
 ) {
   const baseTerminalTheme = getTerminalTheme(terminal);
-  const terminalTheme = {
-    ...baseTerminalTheme,
-    border: `1px solid ${theme.accent}`,
-    background: theme.surface,
-    titleBar: theme.surface,
-    titleColor: theme.muted,
-    body: baseTerminalTheme.body,
-    bodyColor: baseTerminalTheme.bodyColor,
-  };
+  const terminalTheme = terminal === "gnome"
+    ? baseTerminalTheme
+    : {
+      ...baseTerminalTheme,
+      border: `1px solid ${theme.accent}`,
+      background: theme.surface,
+      titleBar: theme.surface,
+      titleColor: theme.muted,
+      body: baseTerminalTheme.body,
+      bodyColor: baseTerminalTheme.bodyColor,
+    };
   const label = eyebrow || path || repo || site || `terminal / ${terminalTheme.name}`;
   const gridUnit = background.gridSize;
   const sidePadding = gridUnit * 1.5;
@@ -202,41 +205,85 @@ function renderControls(theme: TerminalFrameTheme) {
     );
   }
 
-  if (theme.control === "gnome") {
-    return <div style={{ display: "flex", width: 86, fontSize: 24 }}>●</div>;
-  }
-
-  return <div style={{ display: "flex", width: 86 }} />;
+  return (
+    <div
+      style={{
+        display: "flex",
+        width: theme.control === "windows" || theme.control === "win95" ? 112 : 86,
+      }} />
+  );
 }
 
 function renderTrailingControls(theme: TerminalFrameTheme) {
   if (theme.control === "windows") {
-    return <div style={{ display: "flex", justifyContent: "flex-end", width: 86 }}>— ×</div>;
-  }
-
-  if (theme.control === "win95") {
     return (
       <div
         style={{
           display: "flex",
-          justifyContent: "center",
+          justifyContent: "flex-end",
           alignItems: "center",
-          width: 28,
-          height: 24,
-          borderTop: "2px solid #ffffff",
-          borderLeft: "2px solid #ffffff",
-          borderRight: "2px solid #404040",
-          borderBottom: "2px solid #404040",
-          color: "#000000",
-          background: "#c0c0c0",
-          fontSize: 18,
+          gap: 16,
+          width: 112,
         }}>
-        ×
+        <FluentIcon name="minimize" />
+        <FluentIcon name="maximize" />
+        <FluentIcon name="close" />
+      </div>
+    );
+  }
+
+  if (theme.control === "win95") {
+    return (
+      <div style={{ display: "flex", justifyContent: "flex-end", gap: 4, width: 112 }}>
+        {win95Button("minimize")}
+        {win95Button("maximize")}
+        {win95Button("close")}
+      </div>
+    );
+  }
+
+  if (theme.control === "gnome") {
+    return (
+      <div style={{ display: "flex", justifyContent: "flex-end", width: 86 }}>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            width: 32,
+            height: 32,
+            borderRadius: 999,
+            color: "#3d3846",
+            background: "#deddda",
+          }}>
+          <FluentIcon name="close" size={16} />
+        </div>
       </div>
     );
   }
 
   return <div style={{ display: "flex", width: 86 }} />;
+}
+
+function win95Button(name: "minimize" | "maximize" | "close") {
+  return (
+    <div
+      style={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        width: 24,
+        height: 22,
+        borderTop: "2px solid #ffffff",
+        borderLeft: "2px solid #ffffff",
+        borderRight: "2px solid #404040",
+        borderBottom: "2px solid #404040",
+        color: "#000000",
+        background: "#c0c0c0",
+      }}>
+      <FluentIcon name={name} size={14} />
+    </div>
+  );
 }
 
 function controlDot(color: string) {

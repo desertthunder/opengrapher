@@ -60,6 +60,21 @@ highlight = "#ffd85a"
 
 See `examples/` for reference configs. Blob configs live in `examples/blobs/`.
 
+## Rendered text fields
+
+Most visible text can be set in config files or with CLI flags:
+
+| Rendered text                 | Config key    | CLI flag        |
+| ----------------------------- | ------------- | --------------- |
+| Main headline                 | `title`       | `--title`       |
+| Supporting copy               | `description` | `--description` |
+| Small top label               | `eyebrow`     | `--eyebrow`     |
+| Site label / window title     | `site`        | `--site`        |
+| Repository/footer label       | `repo`        | `--repo`        |
+| Path / terminal command label | `path`        | `--path`        |
+
+<img src="./examples/images/fields.png" alt="Rendered text field example" width="640">
+
 ## Font presets
 
 - `IBM`: IBM Plex Serif, IBM Plex Sans, IBM Plex Mono
@@ -119,6 +134,10 @@ Use these with `--template terminal --terminal <name>`:
 - `windows`: title bar with window controls
 - `gnome`: simple header bar with a single icon
 - `win95`: pixel-style bevels and classic blue chrome
+
+The `windows` and `win95` controls use vendored Fluent UI minimize,
+maximize, and close icons. The `gnome` close button uses the same vendored
+close icon.
 
 | Mac                                                                                         | Windows                                                                                             |
 | ------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- |

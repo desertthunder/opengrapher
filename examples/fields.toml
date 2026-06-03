@@ -1,0 +1,19 @@
+title = "Opengrapher"
+description = "Description text appears below the title. Set it with description or --description."
+eyebrow = "eyebrow / --eyebrow"
+site = "example.com"
+repo = "example.com/desertthunder/opengrapher"
+path = "/docs/rendered-fields"
+out = "examples/images/fields.png"
+
+template = "card"
+fontPreset = "Vercel"
+background = "blobs-solid"
+terminal = "mac"
+
+[theme]
+accent = "#2563eb"
+surface = "rgba(255, 255, 255, 0.9)"
+ink = "#0f172a"
+muted = "#475569"
+highlight = "#93c5fd"

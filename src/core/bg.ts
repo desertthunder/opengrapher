@@ -10,6 +10,7 @@ export type BlobBackgroundName =
   | "blobs-editorial"
   | "blobs-solid"
   | "blobs-duotone";
+
 export type BackgroundPresetName = GraphPaperBackgroundName | BlobBackgroundName;
 
 export type BlobShape = {
