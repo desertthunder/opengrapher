@@ -53,9 +53,9 @@ export async function getCachedFontPath(spec: FontSpec): Promise<string> {
   const file = spec.provider === "fontsource" ? spec.file : spec.path;
   const extension = file.split(".").at(-1) ?? "font";
   const filename = basename(file).replace(new RegExp(`\\.${extension}$`), "");
-  const name = [spec.provider, spec.family, spec.version, spec.weight, spec.style, filename]
-    .map(slugify)
-    .join("-");
+  const name = [spec.provider, spec.family, spec.version, spec.weight, spec.style, filename].map(
+    slugify,
+  ).join("-");
 
   return join(cacheDir, spec.provider, spec.version, `${name}.${extension}`);
 }
@@ -71,9 +71,9 @@ export async function getCachedArchivePath(
 
 async function checksum(data: ArrayBuffer): Promise<string> {
   const hash = await crypto.subtle.digest("SHA-256", data);
-  return Array.from(new Uint8Array(hash))
-    .map((byte) => byte.toString(16).padStart(2, "0"))
-    .join("");
+  return Array.from(new Uint8Array(hash)).map((byte) => byte.toString(16).padStart(2, "0")).join(
+    "",
+  );
 }
 
 function basename(path: string): string {
@@ -81,8 +81,5 @@ function basename(path: string): string {
 }
 
 function slugify(value: string | number): string {
-  return String(value)
-    .toLowerCase()
-    .replace(/[^a-z0-9.]+/g, "-")
-    .replace(/^-|-$/g, "");
+  return String(value).toLowerCase().replace(/[^a-z0-9.]+/g, "-").replace(/^-|-$/g, "");
 }

@@ -6,9 +6,11 @@
   ],
   "typescript": {
     "lineWidth": 100,
-    "semiColons": "always"
+    "semiColons": "always",
+    "preferSingleLine": true,
+    "jsx.bracketPosition": "sameLine"
   },
-  "json": {},
+  "json": { "lineWidth": 120, "preferSingleLine": true },
   "markdown": {},
   "includes": ["**/*.{ts,tsx,json,md}"],
   "excludes": ["dist", "node_modules"]

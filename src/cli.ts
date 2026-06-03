@@ -1,4 +1,4 @@
-import { parseArgs } from "jsr:@std/cli/parse-args";
+import { parseArgs } from "jsr:@std/cli@1.0.30/parse-args";
 import { isBackgroundPresetName } from "./core/bg.ts";
 import type { BackgroundPresetName } from "./core/bg.ts";
 import { loadConfigFile } from "./core/config.ts";
@@ -28,10 +28,7 @@ const args = parseArgs(Deno.args, {
     "template",
   ],
   boolean: ["help"],
-  alias: {
-    h: "help",
-    o: "out",
-  },
+  alias: { h: "help", o: "out" },
 });
 
 if (args.help) {
@@ -83,7 +80,7 @@ function parseBackground(value: unknown): BackgroundPresetName | undefined {
   if (typeof value === "string" && isBackgroundPresetName(value)) return value;
 
   throw new Error(
-    `Unsupported background: ${value}. Expected graph-paper-light, graph-paper-dark, graph-paper-indigo, graph-paper-warm, blobs-soft, blobs-gooey, or blobs-editorial.`,
+    `Unsupported background: ${value}. Expected graph-paper-light, graph-paper-dark, graph-paper-indigo, graph-paper-warm, blobs-soft, blobs-gooey, blobs-editorial, blobs-solid, or blobs-duotone.`,
   );
 }
 
@@ -131,7 +128,7 @@ Options:
   --width <number>      Width, defaults to 1200
   --height <number>     Height, defaults to 630
   --font-preset <name>  Font preset: IBM, Vercel, or Monaspace
-  --background <name>   graph-paper-light, graph-paper-dark, graph-paper-indigo, graph-paper-warm, blobs-soft, blobs-gooey, or blobs-editorial
+  --background <name>   graph-paper-light, graph-paper-dark, graph-paper-indigo, graph-paper-warm, blobs-soft, blobs-gooey, blobs-editorial, blobs-solid, or blobs-duotone
   --terminal <name>     mac, windows, gnome, or win95
   --template <name>     card or terminal
   --help, -h            Show this help

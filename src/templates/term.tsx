@@ -50,18 +50,16 @@ export function TerminalCard(
         width,
         height,
         display: "flex",
-        alignItems: "stretch",
+        alignItems: "flex-start",
         position: "relative",
         overflow: "hidden",
         justifyContent: "center",
-        padding: `${topPadding}px ${sidePadding}px ${sidePadding}px`,
         backgroundColor: background.backgroundColor,
         backgroundImage: backgroundImage(background),
         backgroundSize: `${background.gridSize}px ${background.gridSize}px`,
         fontFamily: typography.sans,
         color: theme.ink,
-      }}
-    >
+      }}>
       {background.kind === "blobs" ? <BlobBackdrop background={background} /> : null}
       <div
         style={{
@@ -70,17 +68,16 @@ export function TerminalCard(
           flexDirection: "column",
           width: innerWidth,
           height: innerHeight,
+          marginTop: topPadding,
           gap: 18,
-        }}
-      >
+        }}>
         <div
           style={{
             display: "flex",
             color: theme.accent,
             fontFamily: typography.mono,
             fontSize: 24,
-          }}
-        >
+          }}>
           {label}
         </div>
 
@@ -91,8 +88,7 @@ export function TerminalCard(
               flexDirection: "column",
               gap: 22,
               fontFamily: typography.mono,
-            }}
-          >
+            }}>
             <div style={{ display: "flex", fontSize: 28 }}>
               <span style={{ color: theme.accent }}>$</span>
               <span>&nbsp;{path || "deno task og --template terminal"}</span>
@@ -105,11 +101,14 @@ export function TerminalCard(
                 color: theme.accent,
                 fontFamily: typography.heading,
                 fontSize: 72,
-                fontWeight: typography.heading === "Instrument Serif" ? 400 : 700,
+                fontWeight:
+                  typography.heading === "Instrument Serif"
+                    || typography.heading.startsWith("Monaspace")
+                    ? 400
+                    : 700,
                 letterSpacing: "-0.055em",
                 lineHeight: 0.95,
-              }}
-            >
+              }}>
               {title}
             </h1>
 
@@ -119,17 +118,22 @@ export function TerminalCard(
                 color: terminalTheme.bodyColor,
                 fontSize: 34,
                 lineHeight: 1.28,
-              }}
-            >
+              }}>
               {description}
             </div>
             {repo || site
               ? (
                 <div
-                  style={{ display: "flex", gap: 20, color: terminalTheme.bodyColor, fontSize: 22 }}
-                >
-                  {repo ? <span>{repo}</span> : null}
-                  {site ? <span>{site}</span> : null}
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    gap: 32,
+                    width: "100%",
+                    color: terminalTheme.bodyColor,
+                    fontSize: 22,
+                  }}>
+                  {repo ? <span>{repo}</span> : <span />}
+                  {site ? <span style={{ textAlign: "right" }}>{site}</span> : null}
                 </div>
               )
               : null}
@@ -153,8 +157,7 @@ export function TerminalFrame({ title = "opengrapher", theme, children }: Termin
         borderRadius: theme.borderRadius,
         background: theme.background,
         boxShadow: theme.shadow,
-      }}
-    >
+      }}>
       <div
         style={{
           height: theme.chromeHeight,
@@ -167,8 +170,7 @@ export function TerminalFrame({ title = "opengrapher", theme, children }: Termin
           color: theme.titleColor,
           fontSize: 22,
           fontWeight: 700,
-        }}
-      >
+        }}>
         {renderControls(theme)}
         <div style={{ display: "flex", flex: 1, justifyContent: "center" }}>{title}</div>
         {renderTrailingControls(theme)}
@@ -182,8 +184,7 @@ export function TerminalFrame({ title = "opengrapher", theme, children }: Termin
           minHeight: 260,
           background: theme.body,
           color: theme.bodyColor,
-        }}
-      >
+        }}>
         {children}
       </div>
     </div>
@@ -229,8 +230,7 @@ function renderTrailingControls(theme: TerminalFrameTheme) {
           color: "#000000",
           background: "#c0c0c0",
           fontSize: 18,
-        }}
-      >
+        }}>
         ×
       </div>
     );

@@ -1,0 +1,19 @@
+title = "Two-color blobs"
+description = "100% opacity blobs with a two-color gradient inside each shape."
+eyebrow = "examples/blobs/duotone.toml"
+site = "desertthunder.dev"
+repo = "github.com/desertthunder/opengrapher"
+path = "backgrounds/duotone"
+out = "examples/images/duotone.png"
+
+template = "card"
+fontPreset = "IBM"
+background = "blobs-duotone"
+terminal = "mac"
+
+[theme]
+accent = "#7c3aed"
+surface = "rgba(255, 255, 255, 0.9)"
+ink = "#18181b"
+muted = "#52525b"
+highlight = "#06b6d4"

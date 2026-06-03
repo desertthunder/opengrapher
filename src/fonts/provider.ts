@@ -19,12 +19,7 @@ async function resolveFont(spec: FontSpec): Promise<ResolvedFont> {
     ? await loadFontsourceFont(spec)
     : await loadGitHubReleaseFont(spec);
 
-  return {
-    name: spec.family,
-    data,
-    weight: spec.weight,
-    style: spec.style,
-  };
+  return { name: spec.family, data, weight: spec.weight, style: spec.style };
 }
 
 async function loadFontsourceFont(spec: FontSourceSpec): Promise<ArrayBuffer> {

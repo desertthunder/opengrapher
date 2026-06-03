@@ -1,0 +1,19 @@
+title = "Editorial blobs"
+description = "Warm organic SVG shapes for a softer magazine-style Open Graph card."
+eyebrow = "examples/blobs/editorial.toml"
+site = "desertthunder.dev"
+repo = "github.com/desertthunder/opengrapher"
+path = "backgrounds/editorial"
+out = "examples/images/editorial.png"
+
+template = "card"
+fontPreset = "IBM"
+background = "blobs-editorial"
+terminal = "mac"
+
+[theme]
+accent = "#ea580c"
+surface = "rgba(255, 247, 237, 0.9)"
+ink = "#1c1917"
+muted = "#78716c"
+highlight = "#facc15"

@@ -1,0 +1,19 @@
+title = "Soft edge blobs"
+description = "A calm card backdrop with blurred SVG blobs pushed to the image edges."
+eyebrow = "examples/blobs/soft.toml"
+site = "desertthunder.dev"
+repo = "github.com/desertthunder/opengrapher"
+path = "backgrounds/soft"
+out = "examples/images/soft.png"
+
+template = "card"
+fontPreset = "Vercel"
+background = "blobs-soft"
+terminal = "mac"
+
+[theme]
+accent = "#2563eb"
+surface = "rgba(255, 255, 255, 0.9)"
+ink = "#0f172a"
+muted = "#475569"
+highlight = "#facc15"

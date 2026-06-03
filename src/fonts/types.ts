@@ -5,11 +5,7 @@ export type FontRole = "heading" | "sans" | "mono";
 export type FontProvider = "fontsource" | "github-release";
 export type FontPresetName = "IBM" | "Vercel" | "Monaspace";
 
-export type TypographyTriad = {
-  heading: string;
-  sans: string;
-  mono: string;
-};
+export type TypographyTriad = { heading: string; sans: string; mono: string; };
 
 export type FontSourceSpec = {
   provider: "fontsource";
@@ -35,11 +31,7 @@ export type GitHubReleaseFontSpec = {
 
 export type FontSpec = FontSourceSpec | GitHubReleaseFontSpec;
 
-export type FontPreset = {
-  name: FontPresetName;
-  typography: TypographyTriad;
-  fonts: FontSpec[];
-};
+export type FontPreset = { name: FontPresetName; typography: TypographyTriad; fonts: FontSpec[]; };
 
 export type CachedFontMetadata = {
   family: string;

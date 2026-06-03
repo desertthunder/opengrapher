@@ -1,0 +1,19 @@
+title = "Solid color blobs"
+description = "A 100% opacity single-color SVG blob preset for branded backgrounds."
+eyebrow = "examples/blobs/solid.toml"
+site = "desertthunder.dev"
+repo = "github.com/desertthunder/opengrapher"
+path = "backgrounds/solid"
+out = "examples/images/solid.png"
+
+template = "card"
+fontPreset = "Vercel"
+background = "blobs-solid"
+terminal = "mac"
+
+[theme]
+accent = "#2563eb"
+surface = "rgba(255, 255, 255, 0.9)"
+ink = "#0f172a"
+muted = "#475569"
+highlight = "#93c5fd"
