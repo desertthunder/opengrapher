@@ -235,6 +235,15 @@ body {
   border-left: 3px solid var(--accent);
 }
 
+.content img {
+  display: block;
+  width: 100%;
+  height: auto;
+  margin: 24px 0;
+  border: 1px solid var(--soft);
+  border-radius: 18px;
+}
+
 .content table {
   display: block;
   max-width: 100%;

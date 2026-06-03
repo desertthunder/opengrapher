@@ -25,6 +25,16 @@ deno task og \
 - Ships graph-paper and SVG blob background presets.
 - Lets CLI flags override config values for one-off renders.
 
+## Examples
+
+A few generated cards using built-in presets.
+
+![IBM font preset Open Graph card](./assets/images/font-IBM.png)
+
+![Duotone blob Open Graph card](./assets/images/duotone.png)
+
+![GNOME terminal Open Graph card](./assets/images/terminal-gnome.png)
+
 ## Render from config
 
 Keep repeatable image settings in a config file and pass it to the CLI.

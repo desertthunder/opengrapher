@@ -150,6 +150,15 @@ body {
   border-left: 3px solid var(--accent);
 }
 
+.content img {
+  display: block;
+  width: 100%;
+  height: auto;
+  margin: 24px 0;
+  border: 1px solid var(--soft);
+  border-radius: 18px;
+}
+
 .content table {
   display: block;
   max-width: 100%;
@@ -218,6 +227,11 @@ where a generic social image feels a little too generic.</p>
 <li>Ships graph-paper and SVG blob background presets.</li>
 <li>Lets CLI flags override config values for one-off renders.</li>
 </ul>
+<h2>Examples</h2>
+<p>A few generated cards using built-in presets.</p>
+<p><img src="./assets/images/font-IBM.png" alt="IBM font preset Open Graph card"></p>
+<p><img src="./assets/images/duotone.png" alt="Duotone blob Open Graph card"></p>
+<p><img src="./assets/images/terminal-gnome.png" alt="GNOME terminal Open Graph card"></p>
 <h2>Render from config</h2>
 <p>Keep repeatable image settings in a config file and pass it to the CLI.</p>
 <pre><code class="hljs language-sh">deno task og --config examples/marker.toml</code></pre><pre><code class="hljs language-toml"><span class="hljs-attr">title</span> = <span class="hljs-string">&quot;Read with intention.&quot;</span>
